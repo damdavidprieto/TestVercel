@@ -105,3 +105,11 @@ Crear la web responsiva.
 Subida de imagen y vista de tickets.
 Panel de tesorero (marcar como pagado, descarga).
 Exportación de datos.
+
+Repositorio: https://github.com/damdavidprieto/TestVercel
+Servidor de alojamiento: https://vercel.com/david-prietos-projects-97233534
+Gestor de proveedores de acceso: https://console.firebase.google.com (Configurado para google)
+
+Para firebase en local he tenido que ejecutar los siguientes comandos de CMD:
+-npm install firebase
+-npm install -g firebase-tools
