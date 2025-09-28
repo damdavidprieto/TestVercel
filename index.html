@@ -64,14 +64,20 @@
         });
     });
 
-    // Si ya está logueado, ir directamente a app.html
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        localStorage.setItem('firebaseToken', token);
-        window.location.href = 'app.html';
-      }
-    });
+auth.onAuthStateChanged(async (user) => {
+  // Solo redirige si NO venías ya de un login
+  const fromLogin = sessionStorage.getItem('justLoggedIn');
+
+  if (user && fromLogin) {
+    const token = await user.getIdToken();
+    localStorage.setItem('firebaseToken', token);
+
+    sessionStorage.removeItem('justLoggedIn'); // Limpiar flag
+
+    window.location.href = 'app.html';
+  }
+});
+
   </script>
 </body>
 </html>
