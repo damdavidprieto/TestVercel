@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gestor Documental Peña</title>
+  <!-- Bootstrap CSS CDN -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    crossorigin="anonymous"
+  />
+</head>
+<body>
+  <div class="container py-5">
+    <header class="mb-5 text-center">
+      <h1 class="display-4">Gestor Documental Sepultureros</h1>
+      <p class="lead text-muted">Sube y gestiona los tickets de compra</p>
+    </header>
+
+    <form id="uploadForm" class="mb-4">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-6">
+          <label for="descripcion" class="form-label">Descripción</label>
+          <input
+            type="text"
+            class="form-control"
+            id="descripcion"
+            placeholder="Ejemplo: Compra supermercado"
+            required
+          />
+        </div>
+        <div class="col-md-4">
+          <label for="ticketFile" class="form-label">Selecciona ticket (imagen o PDF)</label>
+          <input
+            class="form-control"
+            type="file"
+            id="ticketFile"
+            accept="image/*,application/pdf"
+            required
+          />
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary w-100">Subir Ticket</button>
+        </div>
+      </div>
+    </form>
+
+    <section>
+      <h2 class="h4 mb-3">Tickets subidos</h2>
+      <div class="table-responsive">
+        <table class="table table-striped align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Descripción</th>
+              <th>Archivo</th>
+            </tr>
+          </thead>
+          <tbody id="ticketsList">
+            <tr>
+              <td colspan="2" class="text-center text-muted">No hay tickets subidos aún.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bootstrap JS Bundle (Popper incluido) -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    crossorigin="anonymous"
+  ></script>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const ticketsList = document.getElementById('ticketsList');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const desc = document.getElementById('descripcion').value.trim();
+      const fileInput = document.getElementById('ticketFile');
+      const file = fileInput.files[0];
+
+      if (!desc || !file) {
+        alert('Por favor, completa todos los campos.');
+        return;
+      }
+
+      // Eliminar fila "No hay tickets subidos aún." si existe
+      const noDataRow = ticketsList.querySelector('tr td[colspan="2"]');
+      if (noDataRow) noDataRow.parentElement.remove();
+
+      // Crear fila nueva para el ticket
+      const tr = document.createElement('tr');
+
+      const tdDesc = document.createElement('td');
+      tdDesc.textContent = desc;
+
+      const tdFile = document.createElement('td');
+      tdFile.textContent = file.name;
+
+      tr.appendChild(tdDesc);
+      tr.appendChild(tdFile);
+
+      ticketsList.appendChild(tr);
+
+      // Limpiar formulario
+      form.reset();
+    });
+  </script>
+</body>
+</html>
