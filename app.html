@@ -4,18 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gestor Documental Peña</title>
-  <!-- Bootstrap CSS CDN -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    crossorigin="anonymous"
-  />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <style>
+    body {
+      display: none;
+    }
+  </style>
 </head>
-<body>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <span class="navbar-brand">📁 Peña - Gestor Documental</span>
+      <div class="d-flex align-items-center ms-auto">
+        <span id="userEmail" class="text-white me-3"></span>
+        <button class="btn btn-outline-light btn-sm" onclick="logout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </nav>
+
   <div class="container py-5">
     <header class="mb-5 text-center">
-      <h1 class="display-4">Gestor Documental Sepultureros</h1>
-      <p class="lead text-muted">Sube y gestiona los tickets de compra</p>
+      <h1 class="display-5">Sube y gestiona tus tickets</h1>
+      <p class="lead text-muted">Puedes subir imágenes o PDFs con la descripción</p>
     </header>
 
     <form id="uploadForm" class="mb-4">
@@ -66,40 +85,41 @@
     </section>
   </div>
 
-  <!-- Bootstrap JS Bundle (Popper incluido) -->
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    crossorigin="anonymous"
-  ></script>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_AUTH_DOMAIN",
-    projectId: "TU_PROJECT_ID",
-    storageBucket: "TU_STORAGE_BUCKET",
-    messagingSenderId: "TU_MSG_SENDER_ID",
-    appId: "TU_APP_ID",
-    measurementId: "TU_MEASUREMENT_ID"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-
-  // Protege esta página
-  firebase.auth().onAuthStateChanged((user) => {
-    if (!user) {
-      // Usuario no autenticado, redirigir a login
-      window.location.href = "index.html";
-    } else {
-      console.log("Acceso permitido a:", user.email);
-    }
-  });
-</script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
+    // Configuración real de Firebase
+    const firebaseConfig = {
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_AUTH_DOMAIN",
+      projectId: "TU_PROJECT_ID",
+      storageBucket: "TU_STORAGE_BUCKET",
+      messagingSenderId: "TU_MESSAGING_SENDER_ID",
+      appId: "TU_APP_ID",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        // No autenticado
+        window.location.href = "index.html";
+      } else {
+        // Mostrar contenido y datos del usuario
+        document.body.style.display = "block";
+        document.getElementById("userEmail").textContent = user.email;
+      }
+    });
+
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    }
+
+    // Lógica de subida de tickets (sin persistencia aún)
     const form = document.getElementById('uploadForm');
     const ticketsList = document.getElementById('ticketsList');
 
@@ -119,9 +139,8 @@
       const noDataRow = ticketsList.querySelector('tr td[colspan="2"]');
       if (noDataRow) noDataRow.parentElement.remove();
 
-      // Crear fila nueva para el ticket
+      // Crear fila nueva
       const tr = document.createElement('tr');
-
       const tdDesc = document.createElement('td');
       tdDesc.textContent = desc;
 
@@ -130,12 +149,11 @@
 
       tr.appendChild(tdDesc);
       tr.appendChild(tdFile);
-
       ticketsList.appendChild(tr);
 
-      // Limpiar formulario
       form.reset();
     });
   </script>
+
 </body>
 </html>
