@@ -98,7 +98,7 @@
 	   auth.onAuthStateChanged((user) => {
 		if (!user) {
 		  // Redirige si no está logueado
-		  //window.location.href = "/";
+		  window.location.href = "/";
 		} else {
 		  // Muestra email del usuario
 		  document.getElementById("userEmail").textContent = user.email;
