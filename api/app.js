@@ -1,6 +1,6 @@
-const fs = require('fs').promises;
-const path = require('path');
-const admin = require('firebase-admin');
+import { promises as fs } from 'fs';
+import path from 'path';
+import admin from 'firebase-admin';
 
 // Inicializa Firebase Admin (solo una vez)
 if (!admin.apps.length) {
@@ -13,7 +13,7 @@ if (!admin.apps.length) {
   });
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   try {
     const authHeader = req.headers.authorization || '';
     const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
@@ -25,7 +25,8 @@ module.exports = async function handler(req, res) {
 
     await admin.auth().verifyIdToken(token);
 
-    const filePath = path.join(process.cwd(), 'app.html');
+    // Lee app.html desde la carpeta privada
+    const filePath = path.join(process.cwd(), 'private', 'app.html');
     const htmlContent = await fs.readFile(filePath, 'utf8');
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -36,4 +37,4 @@ module.exports = async function handler(req, res) {
     res.writeHead(302, { Location: '/' });
     res.end();
   }
-};
+}

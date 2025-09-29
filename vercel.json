@@ -7,7 +7,7 @@
       "use": "@vercel/static"
     },
     {
-      "src": "api/**.js",
+      "src": "api/**/*.js",
       "use": "@vercel/node"
     }
   ],
@@ -17,7 +17,7 @@
       "dest": "/index.html"
     },
     {
-      "src": "/app.html",
+      "src": "/app",
       "dest": "/api/app"
     }
   ]
