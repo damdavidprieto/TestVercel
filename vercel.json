@@ -18,6 +18,10 @@
     {
       "src": "/home",
       "dest": "/api/home"
+    },
+    {
+	  "src": "/app",
+	  "dest": "/api/app"
     }
   ]
 }
