@@ -3,7 +3,7 @@
   "name": "testvercel-pena",
   "builds": [
     {
-      "src": "public/**",
+      "src": "Public/**",
       "use": "@vercel/static"
     }
   ],
