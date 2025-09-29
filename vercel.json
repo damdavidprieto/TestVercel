@@ -3,7 +3,7 @@
   "name": "testvercel-pena",
   "builds": [
     {
-      "src": "*.html",
+      "src": "public/*.html",
       "use": "@vercel/static"
     },
     {
@@ -14,11 +14,11 @@
   "routes": [
     {
       "src": "/",
-      "dest": "public/index.html"
+      "dest": "/login.html"
     },
     {
-      "src": "/app",
-      "dest": "/api/app"
+      "src": "/home",
+      "dest": "/api/home"
     }
   ]
 }
