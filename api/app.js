@@ -11,21 +11,9 @@ if (!admin.apps.length) {
     }),
   });
 }
-
 export default async function handler(req, res) {
   try {
-    const authHeader = req.headers.authorization || '';
-    const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
-
-    if (!token) {
-      // No token, redirige a login público
-      return res.writeHead(302, { Location: '/' }).end();
-    }
-
-    // Verifica el token con Firebase Admin
-    await admin.auth().verifyIdToken(token);
-
-    // Token válido, lee archivo privado
+    // Ruta directa al archivo privado
     const filePath = path.join(process.cwd(), 'private', 'app.html');
     const htmlContent = await fs.readFile(filePath, 'utf8');
 
@@ -33,8 +21,8 @@ export default async function handler(req, res) {
     res.status(200).send(htmlContent);
 
   } catch (error) {
-    console.error('Token inválido o error:', error);
-    // Token inválido, redirige a login
-    return res.writeHead(302, { Location: '/' }).end();
+    console.error('Error al leer app.html:', error);
+    res.status(500).send('Error interno del servidor');
   }
 }
+
