@@ -113,3 +113,31 @@ Gestor de proveedores de acceso: https://console.firebase.google.com (Configurad
 Para firebase en local he tenido que ejecutar los siguientes comandos de CMD:
 -npm install firebase
 -npm install -g firebase-tools
+-npm install firebase-admin
+
+-Sobre la configuración de Firebase en el frontend
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBh6tdi3NswyHj4RVNfIEGYIP9CoMe-BsQ",
+  authDomain: "sepultururosvercelapp.firebaseapp.com",
+  projectId: "sepultururosvercelapp",
+  storageBucket: "sepultururosvercelapp.appspot.com",
+  messagingSenderId: "4986417399",
+  appId: "1:4986417399:web:537bc902d6037dbc9d23f2",
+  measurementId: "G-BYSTFYZPBJ"
+};
+¿Es seguro exponer esta información?
+	Sí, es completamente seguro y es la práctica recomendada:
+		Estos datos no son secretos ni claves privadas. Solo identifican tu proyecto Firebase.
+		La seguridad no depende de ocultar esta configuración, sino de las reglas y autenticación de Firebase.
+		Las reglas de seguridad de Firestore, Storage, etc., controlan quién puede leer o escribir datos.
+		Sin autenticación válida y sin reglas permisivas, nadie puede modificar ni acceder a tus datos.
+
+¿Por qué incluir este config en el frontend?
+	Firebase necesita esta configuración para saber a qué proyecto conectar la app.
+	Sin ella, tu app no puede inicializarse ni usar servicios como autenticación, base de datos o almacenamiento.
+
+Consideraciones adicionales
+	No incluyas claves privadas (como FIREBASE_PRIVATE_KEY) en el frontend. Estas son para uso en servidores o funciones backend.
+	Configura reglas de seguridad estrictas en Firebase para proteger tus datos.
+	Puedes usar variables de entorno en servidores o funciones para manejar claves privadas y configuraciones sensibles.
