@@ -6,7 +6,6 @@
   <title>Login - Gestor Documental Peña</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -30,54 +29,43 @@
       apiKey: "AIzaSyBh6tdi3NswyHj4RVNfIEGYIP9CoMe-BsQ",
       authDomain: "sepultururosvercelapp.firebaseapp.com",
       projectId: "sepultururosvercelapp",
-      storageBucket: "sepultururosvercelapp.appspot.com", // Corregido
+      storageBucket: "sepultururosvercelapp.appspot.com",
       messagingSenderId: "4986417399",
       appId: "1:4986417399:web:537bc902d6037dbc9d23f2",
       measurementId: "G-BYSTFYZPBJ"
     };
 
-    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    const googleLoginBtn = document.getElementById('googleLoginBtn');
+    const provider = new firebase.auth.GoogleAuthProvider();
 
-    googleLoginBtn.addEventListener('click', () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-
-      auth.signInWithPopup(provider)
-        .then(async (result) => {
-          const user = result.user;
-
-          // Obtener el token JWT
-          const token = await user.getIdToken();
-
-          // Guardar en localStorage para usar en app.html
+    // Manejar redirección (después del login con redirect)
+    auth.getRedirectResult()
+      .then(async (result) => {
+        if (result.user) {
+          const token = await result.user.getIdToken();
           localStorage.setItem('firebaseToken', token);
-
-          // Redirigir a la app
           window.location.href = 'app.html';
-        })
-        .catch((error) => {
-          console.error('Error en login:', error);
-          alert('Error al iniciar sesión: ' + error.message);
-        });
+        }
+      })
+      .catch((error) => {
+        console.error("Error después del login con redirect:", error);
+      });
+
+    // Evento para iniciar login
+    document.getElementById('googleLoginBtn').addEventListener('click', () => {
+      auth.signInWithRedirect(provider);
     });
 
-auth.onAuthStateChanged(async (user) => {
-  // Solo redirige si NO venías ya de un login
-  const fromLogin = sessionStorage.getItem('justLoggedIn');
-
-  if (user && fromLogin) {
-    const token = await user.getIdToken();
-    localStorage.setItem('firebaseToken', token);
-
-    sessionStorage.removeItem('justLoggedIn'); // Limpiar flag
-
-    window.location.href = 'app.html';
-  }
-});
-
+    // Si ya está autenticado, ir directamente
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const token = await user.getIdToken();
+        localStorage.setItem('firebaseToken', token);
+        window.location.href = 'app.html';
+      }
+    });
   </script>
 </body>
 </html>
