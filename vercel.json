@@ -1,16 +1,15 @@
 {
   "version": 2,
-  "name": "testvercel-pena",
   "builds": [
     {
-      "src": "public/**",
+      "src": "index.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/",
-      "dest": "/login.html"
+      "dest": "/index.html"
     }
   ]
 }
