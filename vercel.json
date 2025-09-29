@@ -13,11 +13,7 @@
     },
     {
       "src": "/home",
-      "dest": "/private/home"
-    },
-    {
-	  "src": "/app",
-	  "dest": "/api/app"
+      "dest": "/private/home.html"
     }
   ]
 }
