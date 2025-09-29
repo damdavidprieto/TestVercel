@@ -39,6 +39,77 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
+  // Asegurar persistencia local (muy importante)
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+
+      // Botón de login con Google
+      document.getElementById('googleLoginBtn').addEventListener('click', () => {
+        auth.signInWithPopup(provider)
+          .then(async (result) => {
+            const token = await result.user.getIdToken();
+            localStorage.setItem('firebaseToken', token);
+            window.location.href = '/app';
+          })
+          .catch((error) => {
+            console.error("Error en login con popup:", error);
+            alert("Error al iniciar sesión: " + error.message);
+          });
+      });
+
+      // Restaurar sesión si ya estaba logueado
+      auth.onAuthStateChanged(async (user) => {
+        if (user) {
+          console.log("Usuario detectado en login:", user.email);
+
+          // Puedes validar contra el backend si lo deseas:
+          /*
+          try {
+            const token = await user.getIdToken();
+            const res = await fetch('/api/validate', {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            if (res.ok) {
+              window.location.href = '/app';
+            } else {
+              await auth.signOut();
+            }
+          } catch (err) {
+            console.error('Error al validar token:', err);
+          }
+          */
+
+          // Redirige directamente si no estás validando backend:
+          setTimeout(() => {
+            window.location.href = '/app';
+          }, 200); // pequeño retardo opcional
+
+        } else {
+          console.log("Ningún usuario logueado");
+        }
+      });
+    })
+    .catch((err) => {
+      console.error("Error estableciendo persistencia:", err);
+    });
+</script>
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBh6tdi3NswyHj4RVNfIEGYIP9CoMe-BsQ",
+    authDomain: "sepultururosvercelapp.firebaseapp.com",
+    projectId: "sepultururosvercelapp",
+    storageBucket: "sepultururosvercelapp.appspot.com",
+    messagingSenderId: "4986417399",
+    appId: "1:4986417399:web:537bc902d6037dbc9d23f2",
+    measurementId: "G-BYSTFYZPBJ"
+  };
+
+  // Inicializar Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
   const provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({
     prompt: 'select_account'
