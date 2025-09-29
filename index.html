@@ -35,34 +35,28 @@
       measurementId: "G-BYSTFYZPBJ"
     };
 
+    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    // Manejar redirección (después del login con redirect)
-    auth.getRedirectResult()
-      .then(async (result) => {
-        if (result.user) {
+    // Evento click para iniciar login con ventana emergente
+    document.getElementById('googleLoginBtn').addEventListener('click', () => {
+      auth.signInWithPopup(provider)
+        .then(async (result) => {
           const token = await result.user.getIdToken();
           localStorage.setItem('firebaseToken', token);
-          window.location.href = 'app.html';
-        }
-      })
-      .catch((error) => {
-        console.error("Error después del login con redirect:", error);
-      });
-
-    // Evento para iniciar login
-    document.getElementById('googleLoginBtn').addEventListener('click', () => {
-      auth.signInWithRedirect(provider);
+          window.location.href = 'app.html'; // Redirigir tras login
+        })
+        .catch((error) => {
+          console.error("Error en login con popup:", error);
+          alert("Error al iniciar sesión: " + error.message);
+        });
     });
 
-    // Si ya está autenticado, ir directamente
-    auth.onAuthStateChanged(async (user) => {
+    // Si ya está autenticado y abre esta página, redirige a app.html
+    auth.onAuthStateChanged(user => {
       if (user) {
-        const token = await user.getIdToken();
-        localStorage.setItem('firebaseToken', token);
         window.location.href = 'app.html';
       }
     });
