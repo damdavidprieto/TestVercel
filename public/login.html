@@ -51,7 +51,7 @@
           .then(async (result) => {
             const token = await result.user.getIdToken();
             localStorage.setItem('firebaseToken', token);
-            window.location.href = '/app';
+            window.location.href = '/home';
           })
           .catch((error) => {
             console.error("Error en login con popup:", error);
@@ -83,7 +83,7 @@
 
           // Redirige directamente si no estás validando backend:
           setTimeout(() => {
-            window.location.href = '/app';
+            window.location.href = '/home';
           }, 200); // pequeño retardo opcional
 
         } else {
