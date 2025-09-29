@@ -84,73 +84,7 @@
 
   <!-- Firebase Configuración -->
   <script>
-    const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_AUTH_DOMAIN",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_STORAGE_BUCKET",
-      messagingSenderId: "TU_MESSAGING_SENDER_ID",
-      appId: "TU_APP_ID",
-    };
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // Verificar autenticación del usuario
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        // Mostrar contenido si está autenticado
-        document.body.style.display = "block";
-        document.getElementById("userEmail").textContent = user.email;
-      } else {
-        // Redirigir si no está autenticado
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 100);
-      }
-    });
-
-    // Cerrar sesión
-    function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "index.html";
-      });
-    }
-
-    // Subida de tickets (local, sin Firebase Storage aún)
-    const form = document.getElementById('uploadForm');
-    const ticketsList = document.getElementById('ticketsList');
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const desc = document.getElementById('descripcion').value.trim();
-      const fileInput = document.getElementById('ticketFile');
-      const file = fileInput.files[0];
-
-      if (!desc || !file) {
-        alert('Por favor, completa todos los campos.');
-        return;
-      }
-
-      // Eliminar fila "No hay tickets subidos aún."
-      const noDataRow = ticketsList.querySelector('tr td[colspan="2"]');
-      if (noDataRow) noDataRow.parentElement.remove();
-
-      // Crear fila nueva
-      const tr = document.createElement('tr');
-      const tdDesc = document.createElement('td');
-      tdDesc.textContent = desc;
-
-      const tdFile = document.createElement('td');
-      tdFile.textContent = file.name;
-
-      tr.appendChild(tdDesc);
-      tr.appendChild(tdFile);
-      ticketsList.appendChild(tr);
-
-      form.reset();
-    });
   </script>
 
 </body>
