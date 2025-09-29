@@ -17,7 +17,7 @@
     },
     {
       "src": "/home",
-      "dest": "/api/home"
+      "dest": "/private/home"
     },
     {
 	  "src": "/app",
