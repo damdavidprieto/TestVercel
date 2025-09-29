@@ -13,7 +13,7 @@
     },
     {
       "src": "/home",
-      "dest": "/private/home.html"
+      "dest": "private/home.html"
     }
   ]
 }
