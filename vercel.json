@@ -1,35 +1,19 @@
 {
-  "version": 3,
+  "version": 2,
   "builds": [
     {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "public/**/*",
+      "src": "public/**",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "^/$",
-      "dest": "/public/login.html"
+      "src": "/",
+      "dest": "public/login.html"
     },
     {
-      "src": "^/login$",
-      "dest": "/public/login.html"
-    },
-    {
-      "src": "^/css/(.*)$",
-      "dest": "/public/css/$1"
-    },
-    {
-      "src": "^/js/(.*)$",
-      "dest": "/public/js/$1"
-    },
-    {
-      "src": "^/api/(.*)$",
-      "dest": "/api/$1.js"
+      "src": "/home",
+      "dest": "/private/home.html"
     }
   ]
 }
