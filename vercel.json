@@ -14,6 +14,14 @@
     {
       "src": "/home",
       "dest": "private/home.html"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "public/js/$1"
+    },
+    {
+      "src": "/css/(.*)",
+      "dest": "public/css/$1"
     }
   ]
 }
