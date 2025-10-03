@@ -1,4 +1,5 @@
 // login.js
+
 const firebaseConfig = {
   apiKey: "AIzaSyBh6tdi3NswyHj4RVNfIEGYIP9CoMe-BsQ",
   authDomain: "sepultururosvercelapp.firebaseapp.com",
@@ -23,16 +24,26 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     document.getElementById('googleLoginBtn').addEventListener('click', () => {
       auth.signInWithPopup(provider)
         .then(async (result) => {
+          if (!result.user) {
+            throw new Error("No se obtuvo información del usuario");
+          }
+
           const token = await result.user.getIdToken();
 
           // Enviar token al backend para guardar en cookie
           const response = await fetch("/api/set-token", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json"
+            },
+            credentials: "include", // 👈 NECESARIO para cookies
             body: JSON.stringify({ token }),
           });
 
-          if (!response.ok) throw new Error("Fallo al guardar token en cookie");
+          if (!response.ok) {
+            const err = await response.text();
+            throw new Error(`Fallo al guardar token en cookie: ${err}`);
+          }
 
           // Redirigir al área privada
           window.location.href = "/private/dashboard.html";
@@ -46,11 +57,10 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     // Si ya está logueado, redirigir
     auth.onAuthStateChanged(async (user) => {
       if (user) {
-        // Ya hay sesión activa
-        console.log("Sesión detectada: ", user.email);
+        console.log("Sesión detectada:", user.email);
 
-        // Evita redirección inmediata si ya estás en página protegida
-        if (window.location.pathname === "/login.html") {
+        // Redirigir si estás en la página pública
+        if (window.location.pathname === "/" || window.location.pathname === "/login.html") {
           window.location.href = "/private/dashboard.html";
         }
       }
@@ -58,4 +68,5 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   })
   .catch((err) => {
     console.error("Error al establecer persistencia:", err);
+    alert("Error al configurar sesión persistente: " + err.message);
   });
