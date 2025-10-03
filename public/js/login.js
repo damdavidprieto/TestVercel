@@ -46,7 +46,7 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
           }
 
           // Redirigir al área privada
-          window.location.href = "/home.html";
+          window.location.href = "/home";
         })
         .catch((error) => {
           console.error("Error en login con Google:", error);
@@ -61,7 +61,7 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
         // Redirigir si estás en la página pública
         if (window.location.pathname === "/" || window.location.pathname === "/login.html") {
-          window.location.href = "/home.html";
+          window.location.href = "/home";
         }
       }
     });
