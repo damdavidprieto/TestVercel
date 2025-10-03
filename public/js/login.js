@@ -46,7 +46,7 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
           }
 
           // Redirigir al área privada
-          window.location.href = "/private/dashboard.html";
+          window.location.href = "/home.html";
         })
         .catch((error) => {
           console.error("Error en login con Google:", error);
