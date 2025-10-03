@@ -61,7 +61,7 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
         // Redirigir si estás en la página pública
         if (window.location.pathname === "/" || window.location.pathname === "/login.html") {
-          window.location.href = "/private/dashboard.html";
+          window.location.href = "/home.html";
         }
       }
     });
