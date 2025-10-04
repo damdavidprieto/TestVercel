@@ -1,23 +1,15 @@
-import { NextResponse } from 'next/server';
+// api/protected-route.js
 
-export function middleware(req) {
-  const { cookies, nextUrl } = req;
-  const token = cookies.get('token');
-
-  // Rutas públicas permitidas sin token
-  const publicPaths = ['/', '/login.html', '/js/', '/css/'];
-
-  // Si la petición es para una ruta pública, dejamos pasar
-  if (publicPaths.some(path => nextUrl.pathname.startsWith(path))) {
-    return NextResponse.next();
+export default function handler(req, res) {
+    const token = req.cookies.token || null;
+  
+    if (!token) {
+      return res.status(401).json({ error: 'No autorizado' });
+    }
+  
+    // Aquí podrías validar el token (p.ej. con Firebase Admin SDK)
+  
+    // Si está autorizado:
+    res.status(200).json({ data: "Contenido protegido" });
   }
-
-  // Si no hay token y la ruta es privada, redirigimos a login
-  if (!token) {
-    return NextResponse.redirect(new URL('/', req.url));
-  }
-
-  // Aquí podrías añadir lógica para validar el token (opcional)
-
-  return NextResponse.next();
-}
+  
