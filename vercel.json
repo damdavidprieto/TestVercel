@@ -9,8 +9,10 @@
     { "src": "/", "dest": "public/login.html" },
     { "src": "/home", "dest": "private/home.html" },
     { "src": "/api/set-token", "dest": "api/set-token.js" },
-    { "src": "/js/(.*)", "dest": "public/js/$1" },
-    { "src": "/js/(.*)", "dest": "private/js/$1" },
+
+    { "src": "/js/(.*)", "dest": "public/js/$1" },         
+    { "src": "/private/js/(.*)", "dest": "private/js/$1" }, 
+
     { "src": "/css/(.*)", "dest": "public/css/$1" }
   ]
 }
