@@ -1,4 +1,5 @@
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  
   const firebaseConfig = {
     apiKey: "AIzaSyBh6tdi3NswyHj4RVNfIEGYIP9CoMe-BsQ",
     authDomain: "sepultururosvercelapp.firebaseapp.com",
