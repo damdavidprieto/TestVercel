@@ -9,6 +9,7 @@
     { "src": "/", "dest": "public/login.html" },
     { "src": "/home", "dest": "api/protected-page.js" }, 
     { "src": "/api/set-token", "dest": "api/set-token.js" },
+    { "src": "/api/clear-token", "dest": "api/clear-token.js" },
 
     { "src": "/js/(.*)", "dest": "public/js/$1" },
     { "src": "/private/js/(.*)", "dest": "private/js/$1" },

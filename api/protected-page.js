@@ -11,45 +11,28 @@ function parseCookies(cookieHeader) {
   return cookies;
 }
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
+  const cookies = parseCookies(req.headers.cookie);
+  const token = cookies.token;
+
+  // ✅ Si no hay token, limpia la cookie y redirige a login
+  if (!token) {
+    res.setHeader(
+      'Set-Cookie',
+      'token=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax'
+    );
+    return res.writeHead(302, { Location: '/' }).end();
+  }
+
+  // ✅ Si hay token, servir home.html desde carpeta private
+  const filePath = path.join(process.cwd(), 'private', 'home.html');
+
   try {
-    const cookies = parseCookies(req.headers.cookie);
-    const token = cookies.token;
-
-    if (!token) {
-      return res.writeHead(302, { Location: '/' }).end();
-    }
-
-    const pathParts = req.query.path;
-    if (!Array.isArray(pathParts) || pathParts[0] !== 'private') {
-      return res.status(400).send('Ruta no permitida');
-    }
-
-    const relativePath = pathParts.slice(1).join('/');
-    const filePath = path.join(process.cwd(), 'private', relativePath);
-
-    if (!fs.existsSync(filePath)) {
-      return res.status(404).send('Archivo no encontrado');
-    }
-
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = {
-      '.html': 'text/html',
-      '.js': 'application/javascript',
-      '.css': 'text/css',
-      '.json': 'application/json',
-      '.png': 'image/png',
-      '.jpg': 'image/jpeg',
-      '.jpeg': 'image/jpeg',
-      '.svg': 'image/svg+xml'
-    }[ext] || 'application/octet-stream';
-
-    const content = fs.readFileSync(filePath);
-    res.setHeader('Content-Type', contentType);
-    return res.status(200).send(content);
-
+    const html = fs.readFileSync(filePath, 'utf8');
+    res.setHeader('Content-Type', 'text/html');
+    return res.status(200).send(html);
   } catch (err) {
-    console.error('Error leyendo archivo privado:', err);
-    return res.status(500).send('Error interno');
+    console.error('Error cargando home.html:', err);
+    return res.status(500).send('Error interno del servidor');
   }
 }
