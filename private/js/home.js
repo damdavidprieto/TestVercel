@@ -13,39 +13,17 @@ const auth = firebase.auth();
 
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   .then(() => {
-    auth.onAuthStateChanged(async (user) => {
+    auth.onAuthStateChanged((user) => {
       if (!user) {
-        // No hay usuario, redirige al login
+        // Si no hay usuario, redirige al login
         window.location.href = "/";
         return;
       }
 
-      // Verificar que la cookie 'token' exista
-      const hasCookie = document.cookie.includes("token=");
-
-      if (!hasCookie) {
-        console.warn("Sesión Firebase activa pero no hay cookie token, cerrando sesión local...");
-        await auth.signOut();
-        window.location.href = "/";
-        return;
-      }
-
-      // Usuario autorizado, mostrar email
+      // Solo mostrar el correo del usuario
       document.getElementById("userEmail").textContent = user.email;
     });
   })
   .catch((err) => {
     console.error("Error estableciendo persistencia en home:", err);
   });
-
-function logout() {
-  // Hacer logout Firebase y limpiar cookie backend
-  fetch('/api/clear-token', {
-    method: 'POST',
-    credentials: 'include'
-  }).finally(() => {
-    auth.signOut().then(() => {
-      window.location.href = "/";
-    });
-  });
-}
