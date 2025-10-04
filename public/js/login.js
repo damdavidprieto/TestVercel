@@ -14,29 +14,22 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-// Establecer persistencia local
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   .then(() => {
     const provider = new firebase.auth.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
 
-    // Manejador del botón de login
     document.getElementById('googleLoginBtn').addEventListener('click', () => {
       auth.signInWithPopup(provider)
         .then(async (result) => {
-          if (!result.user) {
-            throw new Error("No se obtuvo información del usuario");
-          }
+          if (!result.user) throw new Error("No se obtuvo información del usuario");
 
           const token = await result.user.getIdToken();
 
-          // Enviar token al backend para guardar en cookie
           const response = await fetch("/api/set-token", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            credentials: "include", // 👈 NECESARIO para cookies
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
             body: JSON.stringify({ token }),
           });
 
@@ -45,7 +38,6 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             throw new Error(`Fallo al guardar token en cookie: ${err}`);
           }
 
-          // Redirigir al área privada
           window.location.href = "/home";
         })
         .catch((error) => {
@@ -54,13 +46,21 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         });
     });
 
-    // Si ya está logueado, redirigir
+    // Verificar si ya hay sesión activa
     auth.onAuthStateChanged(async (user) => {
       if (user) {
-        console.log("Sesión detectada:", user.email);
+        // 🔍 Comprobar si la cookie del token existe
+        const hasCookie = document.cookie.includes("token=");
 
-        // Redirigir si estás en la página pública
+        if (!hasCookie) {
+          console.warn("Sesión Firebase detectada, pero no hay token del backend. Cerrando sesión local...");
+          await auth.signOut();
+          return;
+        }
+
+        // Redirige solo si estamos en login
         if (window.location.pathname === "/" || window.location.pathname === "/login.html") {
+          console.log("Sesión detectada:", user.email);
           window.location.href = "/home";
         }
       }
