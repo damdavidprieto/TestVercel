@@ -1,6 +1,11 @@
 function logout() {
-    fetch('/api/clear-token')
-      .then(() => {
-        window.location.href = '/';
-      });
-  }
+  // Hacer logout Firebase y limpiar cookie backend
+  fetch('/api/clear-token', {
+    method: 'POST',
+    credentials: 'include'
+  }).finally(() => {
+    auth.signOut().then(() => {
+      window.location.href = "/";
+    });
+  });
+}
