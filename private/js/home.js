@@ -11,19 +11,19 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-  .then(() => {
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        // Si no hay usuario, redirige al login
-        window.location.href = "/";
-        return;
-      }
-
-      // Solo mostrar el correo del usuario
-      document.getElementById("userEmail").textContent = user.email;
-    });
-  })
-  .catch((err) => {
-    console.error("Error estableciendo persistencia en home:", err);
-  });
+//auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+//  .then(() => {
+//    auth.onAuthStateChanged((user) => {
+//      if (!user) {
+//        // Si no hay usuario, redirige al login
+//        window.location.href = "/";
+//        return;
+//      }
+//
+//      // Solo mostrar el correo del usuario
+//      document.getElementById("userEmail").textContent = user.email;
+//    });
+//  })
+//  .catch((err) => {
+//    console.error("Error estableciendo persistencia en home:", err);
+//  });
