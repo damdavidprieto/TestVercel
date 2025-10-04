@@ -24,10 +24,6 @@
       "dest": "private/home.html"
     },
     {
-      "src": "/api/set-token",
-      "dest": "api/set-token.js"
-    },
-    {
       "src": "/js/(.*)",
       "dest": "public/js/$1"
     },
@@ -35,5 +31,8 @@
       "src": "/css/(.*)",
       "dest": "public/css/$1"
     }
-  ]
+  ],
+  "middleware": {
+    "matcher": ["/home", "/private/(.*)"]
+  }
 }
