@@ -8,6 +8,23 @@
   "routes": [
     { "src": "/", "dest": "public/login.html" },
     { "src": "/home", "dest": "private/home.html" },
+    { "src": "/js/(.*)", "dest": "public/js/$1" },
+    { "src": "/css/(.*)", "dest": "public/css/$1" },
+    { "src": "/api/(.*)", "dest": "/api/$1.js" }
+  ]
+}
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "public/**", "use": "@vercel/static" },
+    { "src": "private/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "public/login.html" },
+    { "src": "/home", "dest": "private/home.html" },
+    { "src": "/js/(.*)", "dest": "public/js/$1" },
+    { "src": "/css/(.*)", "dest": "public/css/$1" },
     { "src": "/api/(.*)", "dest": "/api/$1.js" }
   ]
 }
