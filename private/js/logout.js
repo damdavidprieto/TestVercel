@@ -1,6 +1,6 @@
 // public/js/logout.js
 
-import { auth } from '../lib/firebaseClient.js';
+import { auth } from '../../lib/firebaseClient.js';
 import { signOut } from 'firebase/auth';
 
 function logout() {

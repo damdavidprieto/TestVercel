@@ -8,7 +8,7 @@ import {
   onAuthStateChanged,
   signOut
 } from 'firebase/auth';
-import { auth } from '../lib/firebaseClient.js';
+import { auth } from '../../lib/firebaseClient.js';
 
 // Establecer persistencia local (permite mantener sesión después de recargar)
 setPersistence(auth, browserLocalPersistence)
