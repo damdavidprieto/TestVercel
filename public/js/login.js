@@ -1,5 +1,5 @@
 // public/js/login.js
-
+ 
 import {
   GoogleAuthProvider,
   setPersistence,
