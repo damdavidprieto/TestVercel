@@ -1,5 +1,7 @@
+// api/protected-page.js
 import fs from 'fs';
 import path from 'path';
+import { auth } from '../../lib/firebaseAdmin'; // ✅ importar auth
 
 function parseCookies(cookieHeader) {
   const cookies = {};
@@ -11,28 +13,32 @@ function parseCookies(cookieHeader) {
   return cookies;
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const cookies = parseCookies(req.headers.cookie);
   const token = cookies.token;
 
-  // ✅ Si no hay token, limpia la cookie y redirige a login
+  // ✅ Si no hay token, limpiar y redirigir
   if (!token) {
-    res.setHeader(
-      'Set-Cookie',
-      'token=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax'
-    );
+    res.setHeader('Set-Cookie', 'token=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax');
     return res.writeHead(302, { Location: '/' }).end();
   }
 
-  // ✅ Si hay token, servir home.html desde carpeta private
-  const filePath = path.join(process.cwd(), 'private', 'home.html');
-
   try {
+    // ✅ Verificar token con Firebase Admin
+    const decoded = await auth.verifyIdToken(token);
+    console.log('Usuario verificado:', decoded.email);
+
+    // ✅ Si pasa, servir el archivo HTML
+    const filePath = path.join(process.cwd(), 'private', 'home.html');
     const html = fs.readFileSync(filePath, 'utf8');
+
     res.setHeader('Content-Type', 'text/html');
     return res.status(200).send(html);
-  } catch (err) {
-    console.error('Error cargando home.html:', err);
-    return res.status(500).send('Error interno del servidor');
+  } catch (error) {
+    console.error('Token inválido o expirado:', error);
+
+    // 🔴 Si el token es inválido, borrar la cookie y redirigir
+    res.setHeader('Set-Cookie', 'token=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax');
+    return res.writeHead(302, { Location: '/' }).end();
   }
 }

@@ -1,30 +1,26 @@
-// logout.js
+// public/js/logout.js
 
-// Asegúrate de tener Firebase importado y configurado igual que en login.js
-const firebaseConfig = {
-  apiKey: "AIzaSyBh6tdi3NswyHj4RVNfIEGYIP9CoMe-BsQ",
-  authDomain: "sepultururosvercelapp.firebaseapp.com",
-  projectId: "sepultururosvercelapp",
-  storageBucket: "sepultururosvercelapp.appspot.com",
-  messagingSenderId: "4986417399",
-  appId: "1:4986417399:web:537bc902d6037dbc9d23f2",
-  measurementId: "G-BYSTFYZPBJ"
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+import { auth } from '../lib/firebaseClient.js';
+import { signOut } from 'firebase/auth';
 
 function logout() {
-  // Primero limpias la cookie backend
+  // Limpiar cookie backend
   fetch('/api/clear-token', {
     method: 'POST',
     credentials: 'include'
   }).finally(() => {
-    // Luego haces logout Firebase
-    auth.signOut().then(() => {
+    // Logout Firebase
+    signOut(auth).then(() => {
       window.location.href = "/";
+    }).catch((err) => {
+      console.error('Error cerrando sesión Firebase:', err);
+      alert('Error al cerrar sesión: ' + err.message);
     });
   });
 }
 
-// Exportar o conectar con botón según cómo uses este script
+// Ejemplo de conexión a botón con id="logoutBtn"
+document.getElementById('logoutBtn')?.addEventListener('click', logout);
+
+// También podés exportar la función si la usás en otro lugar
+export { logout };
