@@ -1,14 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: './public/js/login.js', // Ajusta al archivo que quieras construir
+  entry: './public/js/login.js',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
-  mode: 'production', // Usa production si vas a subir a Vercel
+  mode: 'production',
   module: {
     rules: [
       {
@@ -27,6 +28,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/login.html',
       filename: 'login.html',
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'public/css', to: 'css' },
+        { from: 'private/home.html', to: 'private/home.html' },
+      ],
     }),
   ],
   devServer: {

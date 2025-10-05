@@ -5,7 +5,7 @@
     { "src": "package.json", "use": "@vercel/static-build" }
   ],
   "routes": [
-    { "src": "/", "dest": "/index.html" },
+    { "src": "/", "dest": "/login.html" },
     { "src": "/home", "dest": "api/protected-page.js" },
     { "src": "/api/set-token", "dest": "api/set-token.js" },
     { "src": "/api/clear-token", "dest": "api/clear-token.js" }
