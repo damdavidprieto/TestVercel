@@ -1,3 +1,15 @@
-.vercel
-.dist
-.env.local
+# Carpetas ignoradas
+node_modules/
+dist/
+.vercel/
+
+# Archivos de entorno local
+.env
+.env.*.local
+
+# Otros archivos comunes a ignorar
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
