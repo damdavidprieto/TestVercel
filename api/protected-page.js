@@ -1,14 +1,14 @@
 // api/protected-page.js
 import fs from 'fs';
 import path from 'path';
-import { auth } from '../../lib/firebaseAdmin'; // ✅ importar auth
+import { auth } from '../lib/firebaseAdmin';
 
 function parseCookies(cookieHeader) {
   const cookies = {};
   if (!cookieHeader) return cookies;
   cookieHeader.split(';').forEach(cookie => {
     const [key, ...vals] = cookie.split('=');
-    cookies[key?.trim()] = vals.join('=').trim();
+    cookies[key?.trim()] = vals.joina('=').trim();
   });
   return cookies;
 }
