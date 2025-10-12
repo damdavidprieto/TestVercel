@@ -5,6 +5,9 @@
     "start": "webpack serve --mode development --open",
     "build": "webpack --mode production"
   },
+  "dependencies": {
+    "firebase": "^9.22.1"
+  },
   "devDependencies": {
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
