@@ -1,29 +1,11 @@
-function logout() {
-  fetch('/api/clear-token', {
-    method: 'POST',
-    credentials: 'include'
-  }).finally(() => {
-    if (!window.firebaseAuth) {
-      alert("Firebase no está cargado.");
-      return;
-    }
+import { logout } from "./firebaseClient";
 
-    window.firebaseAuth.signOut()
-      .then(() => {
-        window.location.href = "/";
-      })
-      .catch(err => {
-        console.error('Error cerrando sesión Firebase:', err);
-        alert('Error al cerrar sesión: ' + err.message);
-      });
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  const logoutBtn = document.getElementById('cerrarSesionButton');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', logout);
-  } else {
-    console.warn('Botón de logout no encontrado');
+const handleLogout = async () => {
+  try {
+    await logout();
+    // luego redirige, limpia estado, etc.
+  } catch (err) {
+    console.error("Logout falló:", err);
+    // muestra mensaje al usuario
   }
-});
+};
