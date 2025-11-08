@@ -9,7 +9,8 @@ import {
   onAuthStateChanged,
   signOut
 } from 'firebase/auth';
-import { auth } from '../../lib/firebaseClient.js';
+// En public/js/login.js
+import { auth } from './firebaseClient.js';
 
 // Inicializar provider una sola vez
 const provider = new GoogleAuthProvider();
